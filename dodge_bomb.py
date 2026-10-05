@@ -1,7 +1,7 @@
 import os
 import sys
 import pygame as pg
-
+import random
 
 WIDTH, HEIGHT = 1100, 650
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -22,12 +22,24 @@ def main():
         pg.K_LEFT: (-5, 0),
         pg.K_RIGHT: (5, 0)
     }
+    bb_img = pg.Surface((20, 20))
+    pg.draw.circle(bb_img, (255, 0, 0), (10, 10), 10)
+    bb_img.set_colorkey((0, 0, 0))  
+    bb_rct = bb_img.get_rect()
+    bb_rct.x = random.randint(0, 780)
+    bb_rct.y = random.randint(0, 580)
+
+    vx = 5
+    vy = 5
     while True:
+        
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+        
         screen.blit(bg_img, [0, 0]) 
-
+        bb_rct.move_ip(vx, vy)
+        screen.blit(bb_img, bb_rct)
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
         for key, mv in DELTA.items():
