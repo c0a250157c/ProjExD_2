@@ -69,6 +69,9 @@ def main():
         if not tate:
            kk_rct.move_ip(0, -sum_mv[1])
         screen.blit(kk_img, kk_rct)
+        
+        if kk_rct.colliderect(bb_rct):
+           return
         pg.display.update()
         tmr += 1
         clock.tick(50)
