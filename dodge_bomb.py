@@ -7,6 +7,15 @@ WIDTH, HEIGHT = 1100, 650
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
+def check_bound(rct):
+    yoko, tate = True, True
+
+    if rct.left < 0 or WIDTH < rct.right:
+        yoko = False
+    if rct.top < 0 or HEIGHT < rct.bottom:
+        tate = False
+
+    return yoko, tate
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -31,6 +40,7 @@ def main():
 
     vx = 5
     vy = 5
+
     while True:
         
         for event in pg.event.get():
@@ -39,6 +49,11 @@ def main():
         
         screen.blit(bg_img, [0, 0]) 
         bb_rct.move_ip(vx, vy)
+        yoko, tate = check_bound(bb_rct)
+        if not yoko:
+           vx = -vx
+        if not tate:
+           vy = -vy
         screen.blit(bb_img, bb_rct)
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
@@ -47,6 +62,12 @@ def main():
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
         kk_rct.move_ip(sum_mv)
+        yoko, tate = check_bound(kk_rct)
+
+        if not yoko:
+           kk_rct.move_ip(-sum_mv[0], 0)
+        if not tate:
+           kk_rct.move_ip(0, -sum_mv[1])
         screen.blit(kk_img, kk_rct)
         pg.display.update()
         tmr += 1
