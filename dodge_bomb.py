@@ -11,17 +11,17 @@ def gameover(screen: pg.Surface) -> None:
     bk_img = pg.Surface((WIDTH, HEIGHT)) # 1. 黒いSurfaceを作る
     bk_img.fill((0, 0, 0))
 
-    bk_img.set_alpha(128)  # 2. 透明度を設定する
+    bk_img.set_alpha(200)  # 2. 透明度を設定する
   
     screen.blit(bk_img, (0, 0))  # 3. 黒いSurfaceを画面に重ねて暗くする
 
-    fonto = pg.font.Font(None, 30) # 4. Game Overの文字を作る
+    fonto = pg.font.Font(None, 50) # 4. Game Overの文字を作る
     txt = fonto.render("Game Over", True, (255, 255, 255))
     txt_rct = txt.get_rect()
     txt_rct.center = (WIDTH // 2, HEIGHT // 2)
 
     cry_img = pg.image.load("fig/8.png")  # 5. 泣いているこうかとんを左右に表示する
-    cry_img = pg.transform.rotozoom(cry_img, 0, 0.25)
+    cry_img = pg.transform.rotozoom(cry_img, 0, 0.4)
 
     cry_rct1 = cry_img.get_rect()
     cry_rct1.centery = HEIGHT // 2
@@ -118,6 +118,7 @@ def main():
         screen.blit(bb_img, bb_rct)
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
+        
         for key, mv in DELTA.items():
             if key_lst[key]:
                 sum_mv[0] += mv[0]
