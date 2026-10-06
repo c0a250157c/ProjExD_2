@@ -38,6 +38,15 @@ def gameover(screen: pg.Surface) -> None:
     pg.display.update()  # 6. 画面を更新して5秒間表示する
     time.sleep(5)
 
+def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
+    bb_imgs=[]
+    for r in range(1, 11):
+        bb_img = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+        bb_img.set_colorkey((0,0,0))
+        bb_imgs.append(bb_img)
+    bb_accs = [a for a in range(1, 11)]
+    return bb_imgs, bb_accs  
 
 def check_bound(rct):
     yoko, tate = True, True
@@ -57,6 +66,7 @@ def main():
     kk_rct.center = 300, 200
     clock = pg.time.Clock()
     tmr = 0
+    bb_imgs, bb_accs = init_bb_imgs()
     DELTA ={
         pg.K_UP: (0,-5),
         pg.K_DOWN: (0, 5),
@@ -70,6 +80,14 @@ def main():
     bb_rct.x = random.randint(0, WIDTH)
     bb_rct.y = random.randint(0, HEIGHT)
 
+    bb_imgs, bb_accs = init_bb_imgs()
+
+    bb_img = bb_imgs[0]
+    bb_rct = bb_img.get_rect()
+    bb_rct.x = random.randint(0, WIDTH - bb_rct.width)
+    bb_rct.y = random.randint(0, HEIGHT - bb_rct.height)
+
+    
     vx = 5
     vy = 5
 
@@ -80,7 +98,7 @@ def main():
                 return
         
         screen.blit(bg_img, [0, 0]) 
-        bb_rct.move_ip(vx, vy)
+        
         yoko, tate = check_bound(bb_rct)
         if not yoko:
            vx = -vx
@@ -108,7 +126,15 @@ def main():
         pg.display.update()
         tmr += 1
         clock.tick(50)
-        
+        stage = min(tmr // 500, 9)
+
+        bb_img = bb_imgs[stage]
+        bb_rct.width = bb_img.get_rect().width
+        bb_rct.height = bb_img.get_rect().height
+
+        avx = vx * bb_accs[stage]
+        avy = vy * bb_accs[stage]
+        bb_rct.move_ip(avx, avy)
         
 
 
