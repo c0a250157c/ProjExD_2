@@ -48,6 +48,17 @@ def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
     bb_accs = [a for a in range(1, 11)]
     return bb_imgs, bb_accs  
 
+def get_kk_imgs() -> dict[tuple[int, int], pg.Surface]:
+    kk_imgs = {}
+    kk_img = pg.image.load("fig/3.png")
+
+    kk_imgs[(0, 0)] = pg.transform.rotozoom(kk_img, 0, 0.9)
+    kk_imgs[(0, -5)] = pg.transform.rotozoom(kk_img, 0, 0.9)
+    kk_imgs[(0, 5)] = pg.transform.rotozoom(kk_img, 0, 0.9)
+    kk_imgs[(-5, 0)] = pg.transform.rotozoom(kk_img, 0, 0.9)
+    kk_imgs[(5, 0)] = pg.transform.rotozoom(kk_img, 0, 0.9)
+
+    return kk_imgs
 def check_bound(rct):
     yoko, tate = True, True
 
