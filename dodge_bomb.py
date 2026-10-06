@@ -2,9 +2,41 @@ import os
 import sys
 import pygame as pg
 import random
+import time
 
 WIDTH, HEIGHT = 1100, 650
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+ 
+def gameover(screen: pg.Surface) -> None: 
+    bk_img = pg.Surface((WIDTH, HEIGHT)) # 1. 黒いSurfaceを作る
+    bk_img.fill((0, 0, 0))
+
+    bk_img.set_alpha(128)  # 2. 透明度を設定する
+  
+    screen.blit(bk_img, (0, 0))  # 3. 黒いSurfaceを画面に重ねて暗くする
+
+    fonto = pg.font.Font(None, 30) # 4. Game Overの文字を作る
+    txt = fonto.render("Game Over", True, (255, 255, 255))
+    txt_rct = txt.get_rect()
+    txt_rct.center = (WIDTH // 2, HEIGHT // 2)
+
+    cry_img = pg.image.load("fig/8.png")  # 5. 泣いているこうかとんを左右に表示する
+    cry_img = pg.transform.rotozoom(cry_img, 0, 0.25)
+
+    cry_rct1 = cry_img.get_rect()
+    cry_rct1.centery = HEIGHT // 2
+    cry_rct1.right = txt_rct.left - 10
+
+    cry_rct2 = cry_img.get_rect()
+    cry_rct2.centery = HEIGHT // 2
+    cry_rct2.left = txt_rct.right + 10
+
+    screen.blit(cry_img, cry_rct1)
+    screen.blit(txt, txt_rct)
+    screen.blit(cry_img, cry_rct2)
+
+    pg.display.update()  # 6. 画面を更新して5秒間表示する
+    time.sleep(5)
 
 
 def check_bound(rct):
@@ -35,8 +67,8 @@ def main():
     pg.draw.circle(bb_img, (255, 0, 0), (10, 10), 10)
     bb_img.set_colorkey((0, 0, 0))  
     bb_rct = bb_img.get_rect()
-    bb_rct.x = random.randint(0, 780)
-    bb_rct.y = random.randint(0, 580)
+    bb_rct.x = random.randint(0, WIDTH)
+    bb_rct.y = random.randint(0, HEIGHT)
 
     vx = 5
     vy = 5
@@ -71,10 +103,13 @@ def main():
         screen.blit(kk_img, kk_rct)
         
         if kk_rct.colliderect(bb_rct):
+           gameover(screen)
            return
         pg.display.update()
         tmr += 1
         clock.tick(50)
+        
+        
 
 
 if __name__ == "__main__":
