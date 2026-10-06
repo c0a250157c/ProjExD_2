@@ -118,7 +118,7 @@ def main():
         screen.blit(bb_img, bb_rct)
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
-        
+
         for key, mv in DELTA.items():
             if key_lst[key]:
                 sum_mv[0] += mv[0]
@@ -148,7 +148,6 @@ def main():
 
         bb_rct.move_ip(avx, avy)
         
-
 
 if __name__ == "__main__":
     pg.init()
