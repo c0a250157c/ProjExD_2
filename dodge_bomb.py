@@ -126,14 +126,14 @@ def main():
         pg.display.update()
         tmr += 1
         clock.tick(50)
-        stage = min(tmr // 500, 9)
+        avx = vx * bb_accs[min(tmr//500, 9)]
+        avy = vy * bb_accs[min(tmr//500, 9)]
 
-        bb_img = bb_imgs[stage]
+        bb_img = bb_imgs[min(tmr//500, 9)]
+
         bb_rct.width = bb_img.get_rect().width
         bb_rct.height = bb_img.get_rect().height
 
-        avx = vx * bb_accs[stage]
-        avy = vy * bb_accs[stage]
         bb_rct.move_ip(avx, avy)
         
 
